@@ -72,13 +72,13 @@ public class BinanceTraderImpl implements Trader {
             }else  {
                 Order order = tradingServiceBinance.getOrder(orderId);
                 OrderStatus status = order.getStatus();
-                if (lastBid >= profitablePrice && status == OrderStatus.FILLED) {
-                    tradingServiceBinance.sell(tradeAmount, lastBid);
-                    utils.addLogLine(logbox, String.format("Sell for lastBid:%.8f with profit:%.8f ",lastBid,lastBid-curentlyBoughtPrice));
-                    trades = 0;
-                    curentlyBoughtPrice = 0;
-                    orderId = null;
-                }
+//                if (lastBid >= profitablePrice && status == OrderStatus.FILLED) {
+//                    tradingServiceBinance.sell(tradeAmount, lastBid);
+//                    utils.addLogLine(logbox, String.format("Sell for lastBid:%.8f with profit:%.8f ",lastBid,lastBid-curentlyBoughtPrice));
+//                    trades = 0;
+//                    curentlyBoughtPrice = 0;
+//                    orderId = null;
+//                }
                 if (lastBid <= stopLosePrice && trades == 1 &&status == OrderStatus.FILLED) {
                     tradingServiceBinance.sellMarket();
                     trades = 2;
