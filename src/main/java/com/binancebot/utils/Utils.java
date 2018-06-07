@@ -1,5 +1,6 @@
 package com.binancebot.utils;
 
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,8 @@ public class Utils {
         logbox.appendText("");
 
     }
-    public void setText(Label label,String text){
-        label.setText(text);
+    public void updateLabelText(Label label,String text){
+        Platform.runLater(() -> label.setText(text));
     }
     public void clear(TextArea logbox){
         logbox.clear();

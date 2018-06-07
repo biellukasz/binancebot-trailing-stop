@@ -14,6 +14,8 @@ public interface TradingService {
 
     void sellMarket();
 
+    Long stopLoseOrder(double price,double stopLosePrice);
+
     OrderBook getOrderBook();
 
 

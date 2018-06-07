@@ -70,6 +70,16 @@ public class TradingServiceBinanceImpl implements TradingService {
             client.newOrder(order);
     }
 
+    @Override
+    public Long stopLoseOrder(double price,double stopLosePrice) {
+        logger.info("Stop Lose Order ");
+        String priceString = String.format("%.8f", price).replace(",", ".");
+        String stopLosePriceString = String.format("%.8f", stopLosePrice).replace(",", ".");
+        NewOrder order = new NewOrder(symbol, OrderSide.SELL, OrderType.STOP_LOSS_LIMIT, TimeInForce.GTC,""+ Double.valueOf(getTradingBalance().getFree()).intValue(), priceString);
+        NewOrderResponse newOrderResponse = client.newOrder(order.stopPrice(stopLosePriceString));
+        return newOrderResponse.getOrderId();
+    }
+
 
     public OrderBook getOrderBook() {
         return client.getOrderBook(symbol, 5);
@@ -86,7 +96,13 @@ public class TradingServiceBinanceImpl implements TradingService {
     public AssetBalance getTradingBalance() {
         return client.getAccount().getAssetBalance(tradeCurrency);
     }
+
     public Order getOrder(long orderId) {
         return client.getOrderStatus(new OrderStatusRequest(symbol, orderId));
+    }
+
+    public void cancelOrder(long orderId) {
+        logger.info("Cancelling order " + orderId);
+        client.cancelOrder(new CancelOrderRequest(symbol, orderId));
     }
 }

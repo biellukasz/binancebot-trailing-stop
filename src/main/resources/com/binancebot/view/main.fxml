@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -17,13 +18,18 @@
          <children>
             <TextField fx:id="apiKey" layoutX="38.0" layoutY="34.0" promptText="API Key" text="hdqjtgAKZUireocZaDVLuj1qu4BEhvhmV2PrWoCAWYeW9TIwGpeD2d3ffOTKpGlB" />
             <TextField fx:id="secretKey" layoutX="38.0" layoutY="67.0" promptText="Secret Key" text="vMcq8Gu2q6l8fYEP1D9ZdcyaVyF7CLeanJrh749BKA81zYAX0IGkL5EFnh0WfzC0" />
-            <Button layoutX="36.0" layoutY="114.0" mnemonicParsing="false" onAction="#pingBinance" prefHeight="25.0" prefWidth="149.0" text="Start Trading" />
-            <TextArea fx:id="log" layoutX="38.0" layoutY="197.0" prefHeight="271.0" prefWidth="477.0" />
+            <Button layoutX="38.0" layoutY="210.0" mnemonicParsing="false" onAction="#pingBinance" prefHeight="25.0" prefWidth="149.0" text="Start Trading" />
+            <TextArea fx:id="log" layoutX="38.0" layoutY="306.0" prefHeight="162.0" prefWidth="477.0" promptText="log" />
             <TextField fx:id="cryptoSymbol" layoutX="200.0" layoutY="34.0" promptText="crypto to trade" />
-            <Button layoutX="200.0" layoutY="114.0" mnemonicParsing="false" onAction="#stopTrading" prefHeight="25.0" prefWidth="149.0" text="Stop Trading" />
-            <TextField fx:id="tradeAmount" layoutX="200.0" layoutY="67.0" promptText="trade amount" />
+            <Button layoutX="200.0" layoutY="210.0" mnemonicParsing="false" onAction="#stopTrading" prefHeight="25.0" prefWidth="149.0" text="Stop Trading" />
+            <TextField fx:id="tradeAmount" layoutX="200.0" layoutY="67.0" promptText="trade amount in %" />
             <TextField fx:id="stopLose" layoutX="362.0" layoutY="34.0" promptText="stop lose in %" />
             <TextField fx:id="takeProfit" layoutX="362.0" layoutY="67.0" promptText="take profit in %" />
+            <Button layoutX="38.0" layoutY="270.0" mnemonicParsing="false" onAction="#priceMonitoring" prefHeight="25.0" prefWidth="149.0" text="Start Monitoring prices" />
+            <TextArea fx:id="bestCurrency" layoutX="200.0" layoutY="250.0" prefHeight="40.0" prefWidth="236.0" promptText="price monitor" />
+            <Label fx:id="boughtPrice" layoutX="38.0" layoutY="119.0" prefHeight="17.0" prefWidth="165.0" text="Bought Price" />
+            <Label fx:id="currentPrice" layoutX="215.0" layoutY="119.0" prefHeight="17.0" prefWidth="156.0" text="Current Price" />
+            <TextField layoutX="362.0" layoutY="107.0" promptText="Stop Lose Price in %" />
          </children></Pane>
     </items>
 </SplitPane>
