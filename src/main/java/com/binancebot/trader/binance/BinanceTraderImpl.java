@@ -65,6 +65,8 @@ public class BinanceTraderImpl implements Trader {
             priceStopLose = stopLosePrice - (stopLosePrice * 0.3 / 100);
             stopLoseOrderId = tradingServiceBinance.stopLoseOrder(priceStopLose, stopLosePrice);
             utils.addLogLine(logbox, "Created new stop lose order");
+            double procentProfit = ((priceStopLose - curentlyBoughtPrice)/curentlyBoughtPrice)*100;
+            profitInProcent = String.format("%.2f",procentProfit);
         }
         if (curentlyBoughtPrice == 0) {
             profitablePrice = lastBid + (lastBid * profit / 100);

@@ -1,6 +1,5 @@
 package com.binancebot.trader.binance;
 
-import com.binancebot.utils.Utils;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
@@ -64,7 +63,7 @@ public class BinanceTraderImplBuilder {
     }
 
     public BinanceTraderImpl createBinanceTrader() {
-        return new BinanceTraderImpl(baseCurrency, tradeCurrency, key, secret, logbox, boughtPrice, currentPrice, tradeAmount, profit, stopLose,stopLosePriceProcent);
+        return new BinanceTraderImpl(baseCurrency, tradeCurrency, key, secret, logbox, boughtPrice, currentPrice, tradeAmount, profit, stopLose, stopLosePriceProcent);
     }
 
 

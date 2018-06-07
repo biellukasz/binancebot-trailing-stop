@@ -16,8 +16,8 @@
             </children></AnchorPane>
         <Pane id="rightPane" fx:id="myDynamicPane" prefHeight="516.0" prefWidth="542.0">
          <children>
-            <TextField fx:id="apiKey" layoutX="38.0" layoutY="34.0" promptText="API Key" text="hdqjtgAKZUireocZaDVLuj1qu4BEhvhmV2PrWoCAWYeW9TIwGpeD2d3ffOTKpGlB" />
-            <TextField fx:id="secretKey" layoutX="38.0" layoutY="67.0" promptText="Secret Key" text="vMcq8Gu2q6l8fYEP1D9ZdcyaVyF7CLeanJrh749BKA81zYAX0IGkL5EFnh0WfzC0" />
+            <TextField fx:id="apiKey" layoutX="38.0" layoutY="34.0" promptText="API Key" text="/" />
+            <TextField fx:id="secretKey" layoutX="38.0" layoutY="67.0" promptText="Secret Key" text="/" />
             <Button layoutX="38.0" layoutY="210.0" mnemonicParsing="false" onAction="#pingBinance" prefHeight="25.0" prefWidth="149.0" text="Start Trading" />
             <TextArea fx:id="log" layoutX="38.0" layoutY="306.0" prefHeight="162.0" prefWidth="477.0" promptText="log" />
             <TextField fx:id="cryptoSymbol" layoutX="200.0" layoutY="34.0" promptText="crypto to trade" />
