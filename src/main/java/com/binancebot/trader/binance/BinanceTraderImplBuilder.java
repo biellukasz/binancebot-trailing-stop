@@ -11,6 +11,7 @@ public class BinanceTraderImplBuilder {
     private double profit;
     private double stopLose;
     private double tradeAmount;
+    private Double stopLosePriceProcent;
 
     public BinanceTraderImplBuilder() {
     }
@@ -57,8 +58,17 @@ public class BinanceTraderImplBuilder {
         this.tradeAmount = tradeAmount;
     }
 
-    public BinanceTraderImpl createBinanceTrader() {
-        return new BinanceTraderImpl(baseCurrency, tradeCurrency, key, secret, logbox, boughtPrice, currentPrice, tradeAmount, profit, stopLose);
+
+    public void setStopLosePriceProcent(Double stopLosePriceProcent) {
+        this.stopLosePriceProcent = stopLosePriceProcent;
     }
+
+    public BinanceTraderImpl createBinanceTrader() {
+        return new BinanceTraderImpl(baseCurrency, tradeCurrency, key, secret, logbox, boughtPrice, currentPrice, tradeAmount, profit, stopLose,stopLosePriceProcent);
+    }
+
+
+
+
 }
 

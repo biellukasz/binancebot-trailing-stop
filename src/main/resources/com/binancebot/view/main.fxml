@@ -22,14 +22,15 @@
             <TextArea fx:id="log" layoutX="38.0" layoutY="306.0" prefHeight="162.0" prefWidth="477.0" promptText="log" />
             <TextField fx:id="cryptoSymbol" layoutX="200.0" layoutY="34.0" promptText="crypto to trade" />
             <Button layoutX="200.0" layoutY="210.0" mnemonicParsing="false" onAction="#stopTrading" prefHeight="25.0" prefWidth="149.0" text="Stop Trading" />
-            <TextField fx:id="tradeAmount" layoutX="200.0" layoutY="67.0" promptText="trade amount in %" />
+            <TextField fx:id="tradeAmount" layoutX="200.0" layoutY="67.0" promptText="trade amount in % of your btc" />
             <TextField fx:id="stopLose" layoutX="362.0" layoutY="34.0" promptText="stop lose in %" />
             <TextField fx:id="takeProfit" layoutX="362.0" layoutY="67.0" promptText="take profit in %" />
             <Button layoutX="38.0" layoutY="270.0" mnemonicParsing="false" onAction="#priceMonitoring" prefHeight="25.0" prefWidth="149.0" text="Start Monitoring prices" />
             <TextArea fx:id="bestCurrency" layoutX="200.0" layoutY="250.0" prefHeight="40.0" prefWidth="236.0" promptText="price monitor" />
             <Label fx:id="boughtPrice" layoutX="38.0" layoutY="119.0" prefHeight="17.0" prefWidth="165.0" text="Bought Price" />
             <Label fx:id="currentPrice" layoutX="215.0" layoutY="119.0" prefHeight="17.0" prefWidth="156.0" text="Current Price" />
-            <TextField layoutX="362.0" layoutY="107.0" promptText="Stop Lose Price in %" />
+            <TextField fx:id="stopLosePriceProcentage" layoutX="362.0" layoutY="107.0" promptText="Stop Lose Price in %" />
+            <Label fx:id="profit" layoutX="38.0" layoutY="150.0" prefHeight="17.0" prefWidth="149.0" text="Profit" />
          </children></Pane>
     </items>
 </SplitPane>

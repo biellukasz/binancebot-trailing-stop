@@ -5,10 +5,7 @@ import com.binance.api.client.BinanceApiRestClient;
 import com.binance.api.client.domain.OrderSide;
 import com.binance.api.client.domain.OrderType;
 import com.binance.api.client.domain.TimeInForce;
-import com.binance.api.client.domain.account.AssetBalance;
-import com.binance.api.client.domain.account.NewOrder;
-import com.binance.api.client.domain.account.NewOrderResponse;
-import com.binance.api.client.domain.account.Order;
+import com.binance.api.client.domain.account.*;
 import com.binance.api.client.domain.account.request.CancelOrderRequest;
 import com.binance.api.client.domain.account.request.OrderRequest;
 import com.binance.api.client.domain.account.request.OrderStatusRequest;
@@ -47,9 +44,14 @@ public class TradingServiceBinanceImpl implements TradingService {
     }
 
     @Override
-    public NewOrderResponse buy(double quantity, double price) {
+    public NewOrderResponse buy(double procent, double price) {
         String priceString = String.format("%.8f", price).replace(",", ".");
-        logger.info(String.format("Buying %f for %s\n", quantity, priceString));
+        Account account = client.getAccount();
+        String btc = account.getAssetBalance("BTC").getFree();
+        Double aDouble = Double.valueOf(btc);
+        Double enj = Double.valueOf(client.get24HrPriceStatistics(symbol).getLastPrice());
+        String quantity = String.valueOf((int) ((aDouble / enj) * procent));
+        logger.info(String.format("Buying for %s\n", priceString));
         NewOrder order = new NewOrder(symbol, OrderSide.BUY, OrderType.LIMIT, TimeInForce.GTC, "" + quantity, priceString);
         return client.newOrder(order);
     }
@@ -104,5 +106,20 @@ public class TradingServiceBinanceImpl implements TradingService {
     public void cancelOrder(long orderId) {
         logger.info("Cancelling order " + orderId);
         client.cancelOrder(new CancelOrderRequest(symbol, orderId));
+    }
+
+    public static void main(String[] args) {
+        BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance("hdqjtgAKZUireocZaDVLuj1qu4BEhvhmV2PrWoCAWYeW9TIwGpeD2d3ffOTKpGlB", "vMcq8Gu2q6l8fYEP1D9ZdcyaVyF7CLeanJrh749BKA81zYAX0IGkL5EFnh0WfzC0");
+        BinanceApiRestClient binanceApiRestClient = factory.newRestClient();
+        Account account = binanceApiRestClient.getAccount();
+        String btc = account.getAssetBalance("BTC").getFree();
+        Double aDouble = Double.valueOf(btc);
+        Double enj = Double.valueOf(binanceApiRestClient.get24HrPriceStatistics("ENJBTC").getLastPrice());
+        int i = (int) ((aDouble / enj) * 0.5);
+
+
+
+        System.out.println(String.valueOf(i));
+
     }
 }

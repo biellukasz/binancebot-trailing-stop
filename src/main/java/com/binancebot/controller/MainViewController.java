@@ -5,6 +5,7 @@ import com.binancebot.trader.binance.BinanceTraderImpl;
 import com.binancebot.trader.binance.BinanceTraderImplBuilder;
 import com.binancebot.trader.model.CurrencyChanges;
 import de.felixroske.jfxsupport.FXMLController;
+import javafx.application.Platform;
 import javafx.concurrent.ScheduledService;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -21,13 +22,13 @@ public class MainViewController {
 
 
     @FXML
-    TextField apiKey,secretKey,cryptoSymbol,tradeAmount,stopLose,takeProfit;
+    TextField apiKey,secretKey,cryptoSymbol,tradeAmount,stopLose,takeProfit,stopLosePriceProcentage;
 
     @FXML
     TextArea log,bestCurrency;
 
     @FXML
-    Label boughtPrice,currentPrice;
+    Label boughtPrice,currentPrice,profit;
 
     private ScheduledService<String> svc;
 
@@ -39,6 +40,7 @@ public class MainViewController {
 
     @FXML
     public void pingBinance(ActionEvent event) {
+
         BinanceTraderImplBuilder binanceTraderImplBuilder = new BinanceTraderImplBuilder();
         binanceTraderImplBuilder.setBaseCurrency("BTC");
         binanceTraderImplBuilder.setTradeCurrency(cryptoSymbol.getText().toUpperCase().trim());
@@ -50,6 +52,8 @@ public class MainViewController {
         binanceTraderImplBuilder.setTradeAmount(Double.valueOf(tradeAmount.getText().trim()));
         binanceTraderImplBuilder.setProfit(Double.valueOf(takeProfit.getText().trim()));
         binanceTraderImplBuilder.setStopLose(Double.valueOf(stopLose.getText().trim()));
+        binanceTraderImplBuilder.setStopLosePriceProcent(Double.valueOf(stopLosePriceProcentage.getText().trim()));
+
         BinanceTraderImpl binanceTrader = binanceTraderImplBuilder.createBinanceTrader();
 
 
@@ -59,6 +63,7 @@ public class MainViewController {
                     protected String call() {
                         try{
                             binanceTrader.tick();
+                            Platform.runLater(() -> profit.setText("Profit " + binanceTrader.getProfitInProcent()+"%"));
                         }catch (Exception e){
                             log.setText(log.getText()+"\n"+"Trading Canceled  " + e.getMessage());
                             log.appendText("");
@@ -101,7 +106,7 @@ public class MainViewController {
                 return new Task<String>() {
                     protected String call() {
                         CurrencyChanges increasingCurrency = binancePriceMonitoring.getIncreasingCurrency();
-                        bestCurrency.setText(bestCurrency.getText()+"\n"+increasingCurrency.getCurrencySymbol() + " " + increasingCurrency.getProcentageChangeSum());
+                        bestCurrency.setText(bestCurrency.getText() + "\n" + increasingCurrency.getCurrencySymbol() + " " + increasingCurrency.getProcentageChangeSum());
                         bestCurrency.appendText("");
                         return "succes";
                     }

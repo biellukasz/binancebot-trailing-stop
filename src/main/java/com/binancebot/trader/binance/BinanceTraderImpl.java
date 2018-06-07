@@ -1,6 +1,7 @@
 package com.binancebot.trader.binance;
 
 import com.binance.api.client.domain.OrderStatus;
+import com.binance.api.client.domain.account.Order;
 import com.binance.api.client.domain.market.OrderBook;
 import com.binancebot.trader.Trader;
 import com.binancebot.utils.Utils;
@@ -28,9 +29,12 @@ public class BinanceTraderImpl implements Trader {
     private Long orderId;
     private Long stopLoseOrderId;
     private double priceStopLose;
+    private String profitInProcent;
+    private Double stopLosePriceProcent;
 
 
-    public BinanceTraderImpl(String baseCurrency, String tradeCurrency, String key, String secret, TextArea logbox, Label boughtPrice,Label currentPrice, double tradeAmount, double profit, double stopLose) {
+    public BinanceTraderImpl(String baseCurrency, String tradeCurrency, String key, String secret, TextArea logbox, Label boughtPrice, Label currentPrice, double tradeAmount, double profit, double stopLose, Double stopLosePriceProcent) {
+        this.stopLosePriceProcent = stopLosePriceProcent;
         tradingServiceBinance = new TradingServiceBinanceImpl(baseCurrency, tradeCurrency, key, secret, logbox);
         this.priceToTrack = tradingServiceBinance.getLastesPrice();
         this.profit = profit;
@@ -77,12 +81,26 @@ public class BinanceTraderImpl implements Trader {
                     curentlyBoughtPrice = lastAsk;
                     utils.updateLabelText(boughtPrice, String.format("Bought for %.8f", curentlyBoughtPrice));
                     utils.addLogLine(logbox, String.format("Bought for %.8f", curentlyBoughtPrice));
-                    priceStopLose = stopLosePrice - (stopLosePrice * 0.3 / 100);
+                    priceStopLose = stopLosePrice - (stopLosePrice * stopLosePriceProcent / 100);
                     if(tradingServiceBinance.getOrder(orderId).getStatus() == OrderStatus.FILLED){
                         stopLoseOrderId = tradingServiceBinance.stopLoseOrder(priceStopLose, stopLosePrice);
                     }
+                    double procentProfit = ((priceStopLose - curentlyBoughtPrice)/curentlyBoughtPrice)*100;
+                    profitInProcent = String.format("%.2f",procentProfit);
                 }
-            } else {
+            }
+            if(trades == 1 &&stopLoseOrderId != null){
+                Order order = tradingServiceBinance.getOrder(stopLoseOrderId);
+                OrderStatus status = order.getStatus();
+                if(status == OrderStatus.FILLED){
+                    utils.updateLabelText(boughtPrice,"Stop Lose Limit triggered ");
+                }
+                if(status == OrderStatus.PARTIALLY_FILLED && lastprice < priceStopLose){
+                    tradingServiceBinance.sellMarket();
+                    utils.addLogLine(logbox,"Sell market triggered price went down!");
+                }
+            }
+//            else if {
 //                Order order = tradingServiceBinance.getOrder(orderId);
 //                OrderStatus status = order.getStatus();
 //                if (lastBid >= profitablePrice && status == OrderStatus.FILLED) {
@@ -96,11 +114,15 @@ public class BinanceTraderImpl implements Trader {
 //                    tradingServiceBinance.sellMarket();
 //                    trades = 2;
 //                }
-                utils.addLogLine(logbox, String.format("Stop Lose price is   %.8f Current Price is  %.8f", stopLosePrice, lastBid));
-            }
+//            }
+            utils.addLogLine(logbox, String.format("Stop Lose price is   %.8f Current Price is  %.8f", stopLosePrice, lastBid));
+
         } catch (Exception e) {
             logger.error("Unable to perform ticker exception : " + e.getMessage(), e);
             utils.addLogLine(logbox, e.getMessage());
         }
+    }
+    public String getProfitInProcent() {
+        return profitInProcent;
     }
 }
